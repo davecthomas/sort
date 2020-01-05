@@ -10,12 +10,14 @@ import json
 import random
 import requests
 from app import sort
+from app.sort import get_random_digits, get_random_in_range
+from app import search
 
 app = Flask(__name__)
-user_cli = AppGroup('admin')
+user_cli = AppGroup('do')
 ts = sort.TestSort()
 parser = reqparse.RequestParser()
-
+search = search.Search()
 
 def get_page(args):
     if args.page is None:
@@ -49,21 +51,23 @@ def index():
     return str_return
 
 
-@app.cli.command('import_experts')
-@click.argument('test_val')
-def admin_import_experts(test_val):
-    message = {
-        'message': 'OK'
-    }
+@app.cli.command('sort_list')
+# @click.argument('test_val')
+def sort_list():
+    print(ts.s.selection_sort_2(get_random_digits(1000, 1000)))
 
-    test = test_val == "true"
-    print(f'Test mode: {test}')
-    dict_return = {
-        "sort_list": []
-    }
-    message["message"] = json.dumps(dict_return)
 
-    return jsonify(message)
+@app.cli.command('sort_list')
+@click.argument('find_me')
+def search_list(find_me):
+    print(f'{find_me}')
+    find_me = int(find_me)
+    search_list_rand = get_random_digits(50, 50)
+    sorted_list = ts.s.selection_sort_2(search_list_rand)
+    generate_random_index = get_random_in_range(0, 50)
+    sorted_list[generate_random_index] = find_me
+    print(f'Looking for {find_me} in {sorted_list}')
+    print(search.binary_search(sorted_list, find_me, True))
 
 Bootstrap(app)
 app.cli.add_command(user_cli)

@@ -1,5 +1,5 @@
 ## Sort
-Fiddling with sorts
+Fiddling with sorts and searches
 
 ## Installation
 Create an isolated Python environment in a directory external to your project and activate it:
