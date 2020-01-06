@@ -10,8 +10,10 @@ import json
 import random
 import requests
 from app import sort
+from app.inverted_index import InvertedIndex
 from app.sort import get_random_digits, get_random_in_range
 from app import search
+from app import inverted_index
 
 app = Flask(__name__)
 user_cli = AppGroup('do')
@@ -57,17 +59,23 @@ def sort_list():
     print(ts.s.selection_sort_2(get_random_digits(1000, 1000)))
 
 
-@app.cli.command('sort_list')
+@app.cli.command('bsearch_list')
 @click.argument('find_me')
-def search_list(find_me):
+def bsearch_list(find_me):
     print(f'{find_me}')
     find_me = int(find_me)
     search_list_rand = get_random_digits(50, 50)
-    sorted_list = ts.s.selection_sort_2(search_list_rand)
     generate_random_index = get_random_in_range(0, 50)
-    sorted_list[generate_random_index] = find_me
+    search_list_rand[generate_random_index] = find_me
+    sorted_list = ts.s.selection_sort_2(search_list_rand)
     print(f'Looking for {find_me} in {sorted_list}')
-    print(search.binary_search(sorted_list, find_me, True))
+    return_tuple = search.binary_search_2(sorted_list, find_me, True)
+    print(f'{return_tuple[0]},{return_tuple[1]}')
+
+@app.cli.command('inverted_index')
+@click.argument('find_me')
+def inverted_index(find_me):
+    i = InvertedIndex(['test_files/bible.txt'])
 
 Bootstrap(app)
 app.cli.add_command(user_cli)

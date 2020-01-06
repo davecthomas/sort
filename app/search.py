@@ -17,6 +17,8 @@ class Search:
 
         while start<=end and not found:
             mid = (start + end) // 2
+            if test:
+                print(f'{start},{mid},{end}')
 
             if sorted_list[mid] == find_me:
                 found = True
@@ -28,6 +30,31 @@ class Search:
                     start = mid + 1
 
         return found
+
+    # requires list is sorted
+    def binary_search_2(self, list_search, find_me, test=False):
+        start = 0
+        end = len(list_search)
+        found = False
+        location =  None
+
+        while not found and start<=end:
+            mid = (start + end)//2
+
+            if test:
+                print(f'{mid}')
+            if list_search[mid] == find_me:
+                found = True
+                location = mid
+
+            else:
+                if find_me < list_search[mid]:
+                    end = mid-1
+                else:
+                    start = mid+1
+
+        return found, location
+
 
 
 class TestSearch:
