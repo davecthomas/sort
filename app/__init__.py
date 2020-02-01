@@ -76,6 +76,12 @@ def bsearch_list(find_me):
 @click.argument('find_me')
 def inverted_index(find_me):
     i = InvertedIndex(['test_files/bible.txt'])
+    dict_index_entry = i.search_index(find_me)
+    if dict_index_entry is not None:
+        # print(f'Found {find_me} {dict_index_entry[0].get_num_times_found()} times. Top location: {index_entry[0].get_top_location()}')
+        print(f'Length {len(dict_index_entry)}')
+    else:
+        print(f'{find_me} was not found.')
 
 Bootstrap(app)
 app.cli.add_command(user_cli)
